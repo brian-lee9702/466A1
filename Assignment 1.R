@@ -115,6 +115,21 @@ ytm10 <- ytm(cf10)
 
 ##Yield Calculation
 
+BDC <- c(ByDates[[1]], ByDates[[2]], ByDates[[3]], ByDates[[4]], ByDates[[5]]
+         , ByDates[[6]], ByDates[[7]], ByDates[[8]], ByDates[[9]], ByDates[[10]])
+Ccoup <- rep(coup, 10)
+Ccoup <- 100*Ccoup
+h <- c(1:12)
+holder <- data.frame(h, h, h, h, h, h, h, h, h, h)
+for (i in c(1:10)) {
+  holder[1,i]<-(((Ccoup[12*i-11])/2+100)/(BDC[12*i-11]))-1
+}
+for (k in c(1:10)) {
+  for (i in c(2:12)) {
+    holder[i,k]<-((100+Ccoup[12*k-12+i]/2)^(-1)*(BDC[(12*k-12)+i]-sum((Ccoup[(12*k-12)+i]/2)/((1+holder[c(1:(i-1)),k])^(c(1:(i-1)))))))^(-1/i)-1
+  }
+}
+hold <- 2*as.data.frame(unlist(holder))[,1]
 cmat <- rep(mat, 10)
 
 ##PLOT
